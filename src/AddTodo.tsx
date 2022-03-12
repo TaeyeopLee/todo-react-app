@@ -1,28 +1,35 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { TextField, Paper, Button, Grid } from "@material-ui/core";
 
 interface IAddTodoItem {
   title: string;
+  done: boolean;
 }
 const defaultAddTodoItem: IAddTodoItem = {
-  title: ""
+  title: "",
+  done: false
 }
 const AddTodo = ({add}: any) => {
-  const [item, setItem] = useState(defaultAddTodoItem);
+  const [item, setItem] = useState({item: defaultAddTodoItem});
 
   const onInputChange = (e: any) => {
-    const newitem = item;
-    newitem.title = e.target.value;
-    setItem(newitem);
-    console.log(newitem);
+    console.log(e);
+    const newitem = item.item;
+    newitem.title = e.currentTarget.value;
+    setItem({item: newitem} );
   }
 
+  useEffect(() => {
+    console.log(item);
+  }, [item.item.title])
+
   const onButtonClick = () => {
-    add(item);
-    setItem({title: ""});
+    add(item.item);
+    setItem({item: defaultAddTodoItem});
   }
 
   const enterKeyEventHandler = (e: any) => {
+    console.log("enterKey");
     if (e.key === 'Enter') {
       onButtonClick();
     }
@@ -36,7 +43,7 @@ const AddTodo = ({add}: any) => {
             placeholder="Add Todo here"
             fullWidth
             onChange={onInputChange}
-            value={item.title}
+            value={item.item.title}
             onKeyPress={enterKeyEventHandler}
           />
         </Grid>

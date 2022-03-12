@@ -12,37 +12,36 @@ const defaultTodoItems = [
   }
 ]
 function App() {
-  const [items, setItems] = useState<IPropsTodoItem[]>(defaultTodoItems);
+  const [items, setItems] = useState({items: defaultTodoItems});
 
   const add = (item: IPropsTodoItem) => {
-    const thisItems = items;
+    const thisItems = items.items;
     item.id = "ID-" + thisItems.length;
     item.done = false;
     thisItems.push(item);
-    setItems(thisItems);
-    console.log("items: ", items);
+    setItems({items: thisItems});
   }
 
   const deleteItem = (item: IPropsTodoItem) => {
-    const thisItems = items;
+    const thisItems = items.items;
     console.log("Before Update Items: ", items);
     const newItems = thisItems.filter(e => e.id !== item.id);
-    setItems(newItems);
+    setItems({items: newItems});
   }
 
   useEffect(() => {
     console.log("Update Items: ", items);
-  }, items);
+  }, [items]);
 
   return (
     <div className="App">
       <Container maxWidth="md">
         <AddTodo add={add}/>
-        {items.length > 0 && (
+        {items.items.length > 0 && (
           <Paper style={{ margin: 16 }}>
             <List>
-              {items.map((item, idx) => (
-                <Todo item={item} key={item.id} />
+              {items.items.map((item, idx) => (
+                <Todo item={item} key={item.id} delete={deleteItem} />
               ))}
             </List>
           </Paper>

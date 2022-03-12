@@ -4,6 +4,7 @@ import {DeleteOutlined} from "@material-ui/icons";
 
 interface IPropsTodo {
   item: IPropsTodoItem;
+  delete: any;
 }
 
 export interface IPropsTodoItem {
@@ -14,6 +15,11 @@ export interface IPropsTodoItem {
 
 const Todo = ( props: IPropsTodo ) => {
   const [item, setItem] = useState<IPropsTodoItem>(props.item);
+
+  const deleteEventHandler = () => {
+    props.delete(item);
+  }
+
   return (
     <ListItem>
       <Checkbox checked={item.done} />
@@ -29,7 +35,10 @@ const Todo = ( props: IPropsTodo ) => {
         />
       </ListItemText>
       <ListItemSecondaryAction>
-        <IconButton aria-label="Delete Todo">
+        <IconButton
+          aria-label="Delete Todo"
+          onClick={deleteEventHandler}
+        >
           <DeleteOutlined />
         </IconButton>
       </ListItemSecondaryAction>
