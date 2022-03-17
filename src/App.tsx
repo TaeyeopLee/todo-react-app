@@ -3,6 +3,7 @@ import './App.css';
 import Todo, {IPropsTodoItem} from "./Todo";
 import AddTodo from "./AddTodo";
 import { Paper, List, Container } from "@material-ui/core";
+import {call} from "./service/ApiService";
 
 const defaultTodoItems = [
   {
@@ -15,23 +16,22 @@ function App() {
   const [items, setItems] = useState({items: defaultTodoItems});
 
   const add = (item: IPropsTodoItem) => {
-    const thisItems = items.items;
-    item.id = "ID-" + thisItems.length;
-    item.done = false;
-    thisItems.push(item);
-    setItems({items: thisItems});
+    call("/todo", "POST", item).then((response) =>
+      setItems({ items: response.data })
+    );
   }
 
   const deleteItem = (item: IPropsTodoItem) => {
-    const thisItems = items.items;
-    console.log("Before Update Items: ", items);
-    const newItems = thisItems.filter(e => e.id !== item.id);
-    setItems({items: newItems});
+    call("/todo", "DELETE", item).then((response) =>
+      setItems({ items: response.data })
+    );
   }
 
   useEffect(() => {
-    console.log("Update Items: ", items);
-  }, [items]);
+    call("/todo", "GET", null).then((response) =>
+      setItems({ items: response.data })
+    );
+  }, []);
 
   return (
     <div className="App">
