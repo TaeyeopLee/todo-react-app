@@ -27,6 +27,12 @@ function App() {
     );
   }
 
+  const update = (item: IPropsTodoItem) => {
+    call("/todo", "PUT", item).then((response) =>
+      setItems({ items: response.data })
+    );
+  }
+
   useEffect(() => {
     call("/todo", "GET", null).then((response) =>
       setItems({ items: response.data })
@@ -41,7 +47,7 @@ function App() {
           <Paper style={{ margin: 16 }}>
             <List>
               {items.items.map((item, idx) => (
-                <Todo item={item} key={item.id} delete={deleteItem} />
+                <Todo item={item} key={item.id} delete={deleteItem} update={update} />
               ))}
             </List>
           </Paper>

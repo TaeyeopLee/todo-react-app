@@ -1,11 +1,12 @@
 import { API_BASE_URL } from "../app-config";
+import { IPropsTodoItem } from "../Todo";
 interface IOptions {
   headers: Headers;
   url: string;
   method: string;
   body?: string;
 }
-export function call(api: string, method: string, request: any) {
+export function call(api: string, method: string, request: IPropsTodoItem | null) {
   let options: IOptions = {
     headers: new Headers({
       "Content-Type": "application/json",

@@ -6,6 +6,7 @@ interface IPropsTodo {
   item: IPropsTodoItem;
   readOnly?: boolean;
   delete: any;
+  update: any;
 }
 
 export interface IPropsTodoItem {
@@ -15,7 +16,9 @@ export interface IPropsTodoItem {
 }
 
 const Todo = ( props: IPropsTodo ) => {
-  const [item, setItem] = useState<IPropsTodo>({item: props.item, delete: props.delete, readOnly: true});
+  const [item, setItem] = useState<IPropsTodo>({
+    item: props.item, delete: props.delete, update: props.update, readOnly: true
+  });
 
   const deleteEventHandler = () => {
     props.delete(item);
@@ -24,6 +27,8 @@ const Todo = ( props: IPropsTodo ) => {
   const enterKeyEventHandler = (e: any) => {
     if (e.key === "Enter") {
       setItem({ ...item, readOnly: true});
+      console.log("after setItem: ", JSON.stringify(item));
+      props.update(item);
     }
   }
   const offReadOnlyMode = () => {
@@ -34,13 +39,14 @@ const Todo = ( props: IPropsTodo ) => {
   const editEventHandler = (e: any) => {
     const thisItem = item.item;
     thisItem.title = e.target.value;
-    setItem({ ...item, item: thisItem})
+    setItem({ ...item, item: thisItem});
   }
 
   const checkboxEventHandler = (e: any) => {
     const thisItem = item.item;
     thisItem.done = !thisItem.done;
     setItem({ ...item, item: thisItem });
+    props.update(item);
   }
 
   useEffect(() => {
