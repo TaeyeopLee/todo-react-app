@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import Todo, {IPropsTodoItem} from "./Todo";
 import AddTodo from "./AddTodo";
-import { Paper, List, Container } from "@material-ui/core";
-import {call} from "./service/ApiService";
+import { Paper, List, Container, Grid, Button, AppBar, Toolbar, Typography } from "@material-ui/core";
+import { call, signout } from "./service/ApiService";
 
 const defaultTodoItems = [
   {
@@ -39,8 +39,24 @@ function App() {
     );
   }, []);
 
+  const navigationBar = (
+    <AppBar position='static'>
+      <Toolbar>
+        <Grid justifyContent='space-between' container>
+          <Grid item>
+            <Typography variant='h6'>오늘의 할일</Typography>
+          </Grid>
+          <Grid>
+            <Button color="inherit" onClick={signout}>로그아웃</Button>
+          </Grid>
+        </Grid>
+      </Toolbar>
+  </AppBar>
+);
+
   return (
     <div className="App">
+      {navigationBar}
       <Container maxWidth="md">
         <AddTodo add={add}/>
         {items.items.length > 0 && (
