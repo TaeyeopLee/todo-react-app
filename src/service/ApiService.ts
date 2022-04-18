@@ -64,3 +64,7 @@ export function signout() {
   localStorage.removeItem(ACCESS_TOKEN);
   window.location.href = "/login";
 }
+
+export function signup(userDTO: any) {
+  return call('/auth/signup', 'POST', userDTO);
+}
