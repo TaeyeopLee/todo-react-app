@@ -14,7 +14,7 @@ const defaultTodoItems = [
 ]
 function App() {
   const [items, setItems] = useState({items: defaultTodoItems});
-
+  const [isLoading, setIsLoading] = useState(true);
   const add = (item: IPropsTodoItem) => {
     call("/todo", "POST", item).then((response) =>
       setItems({ items: response.data })
@@ -34,9 +34,10 @@ function App() {
   }
 
   useEffect(() => {
-    call("/todo", "GET", null).then((response) =>
-      setItems({ items: response.data })
-    );
+    call("/todo", "GET", null).then((response) => {
+      setItems({ items: response.data });
+      setIsLoading(false);
+    });
   }, []);
 
   const navigationBar = (
@@ -54,12 +55,14 @@ function App() {
   </AppBar>
 );
 
+const loadingPage = <h1>로딩중...</h1>;
+
   return (
     <div className="App">
       {navigationBar}
       <Container maxWidth="md">
         <AddTodo add={add}/>
-        {items.items.length > 0 && (
+        {!isLoading && items.items.length > 0 && (
           <Paper style={{ margin: 16 }}>
             <List>
               {items.items.map((item, idx) => (
@@ -69,6 +72,7 @@ function App() {
           </Paper>
           )
         }
+        {isLoading && loadingPage}
       </Container>
     </div>
   );
